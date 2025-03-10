@@ -1,12 +1,15 @@
 {
-  "name": "typescript-brainf",
+  "name": "typescript-horrors",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
 }
