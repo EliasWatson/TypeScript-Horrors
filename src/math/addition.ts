@@ -252,5 +252,9 @@ export type Add<A, B, Carry = false> = A extends `${infer AHead}${infer ATail}`
 type Reverse<S> = S extends `${infer Head}${infer Tail}`
   ? `${Reverse<Tail>}${Head}`
   : "";
+type ToNumber<S> = S extends `${infer N extends number}` ? N : never;
 
-type Test = Reverse<Add<Reverse<"">, Reverse<"">>>;
+type Input<N extends number> = Reverse<`${N}`>;
+type Output<S extends string> = ToNumber<Reverse<S>>;
+
+type Test = Output<Add<Input<37935>, Input<5144>>>;
