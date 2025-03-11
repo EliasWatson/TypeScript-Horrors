@@ -203,3 +203,54 @@ type CarryLookupTable = {
   "98": true;
   "99": true;
 };
+
+type IncrementLookupTable = {
+  "0": "1";
+  "1": "2";
+  "2": "3";
+  "3": "4";
+  "4": "5";
+  "5": "6";
+  "6": "7";
+  "7": "8";
+  "8": "9";
+  // 9 is not possible
+};
+
+type LookupAddition<K> = K extends keyof AdditionLookupTable
+  ? AdditionLookupTable[K]
+  : never;
+type LookupCarry<K> = K extends keyof CarryLookupTable
+  ? CarryLookupTable[K]
+  : never;
+type LookupIncrement<K> = K extends keyof IncrementLookupTable
+  ? IncrementLookupTable[K]
+  : never;
+
+export type Add<A, B, Carry = false> = A extends `${infer AHead}${infer ATail}`
+  ? B extends `${infer BHead}${infer BTail}`
+    ? // Both A and B have digits
+      Carry extends true
+      ? LookupAddition<`${AHead}${BHead}`> extends "9"
+        ? `0${Add<ATail, BTail, true>}`
+        : `${LookupIncrement<LookupAddition<`${AHead}${BHead}`>>}${Add<ATail, BTail, LookupCarry<`${AHead}${BHead}`>>}`
+      : `${LookupAddition<`${AHead}${BHead}`>}${Add<ATail, BTail, LookupCarry<`${AHead}${BHead}`>>}`
+    : // A has digits, B has no more digits
+      Carry extends true
+      ? `${LookupIncrement<AHead>}${ATail}`
+      : A
+  : B extends `${infer BHead}${infer BTail}`
+    ? // A has no more digits, B has digits
+      Carry extends true
+      ? `${LookupIncrement<BHead>}${BTail}`
+      : B
+    : // No more digits in A or B
+      Carry extends true
+      ? "1"
+      : "";
+
+type Reverse<S> = S extends `${infer Head}${infer Tail}`
+  ? `${Reverse<Tail>}${Head}`
+  : "";
+
+type Test = Reverse<Add<Reverse<"">, Reverse<"">>>;
