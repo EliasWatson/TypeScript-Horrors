@@ -99,3 +99,5 @@ type AsciiTable = {
   "521": "}";
   "621": "~";
 };
+
+export type LookupAscii<K> = K extends keyof AsciiTable ? AsciiTable[K] : never;
