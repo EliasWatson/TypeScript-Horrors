@@ -5,3 +5,7 @@ export type ToNumber<S> = S extends `${infer N extends number}` ? N : never;
 
 export type Input<N extends number> = Reverse<`${N}`>;
 export type Output<S extends string> = ToNumber<Reverse<S>>;
+
+export type StripLeadingZeroes<S> = S extends `${infer Rest}0`
+  ? StripLeadingZeroes<Rest>
+  : S;
