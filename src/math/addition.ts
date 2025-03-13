@@ -1,3 +1,5 @@
+import { Input, Output } from "../util";
+
 type AdditionLookupTable = {
   "00": "0";
   "01": "1";
@@ -248,13 +250,5 @@ export type Add<A, B, Carry = false> = A extends `${infer AHead}${infer ATail}`
       Carry extends true
       ? "1"
       : "";
-
-type Reverse<S> = S extends `${infer Head}${infer Tail}`
-  ? `${Reverse<Tail>}${Head}`
-  : "";
-type ToNumber<S> = S extends `${infer N extends number}` ? N : never;
-
-type Input<N extends number> = Reverse<`${N}`>;
-type Output<S extends string> = ToNumber<Reverse<S>>;
 
 type Test = Output<Add<Input<37935>, Input<5144>>>;
